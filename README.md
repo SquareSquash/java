@@ -5,3 +5,5 @@ Java client for Squash exception reporting format.  The SquashEntry class is mea
 and then serialized with gson for transmission to the Squash server.
 
 For more information: https://git.squareup.com/tim/squash_web
+
+Testing
