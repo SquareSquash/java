@@ -1,4 +1,4 @@
-java_squash
+squash_java
 ===========
 
 Java client for Squash exception reporting format.  The SquashEntry class is meant to be extended
