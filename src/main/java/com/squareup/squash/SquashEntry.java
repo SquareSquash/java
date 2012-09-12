@@ -10,12 +10,11 @@ import java.util.Map;
 
 /** An exception to be tracked in Squash (the replacement for Hoptoad, because Hoptoad is lame). */
 // All of the fields are only used for gson serialization, and so can't be made local or removed.
-@SuppressWarnings({ "FieldCanBeLocal", "UnusedDeclaration" })
+@SuppressWarnings({"FieldCanBeLocal", "UnusedDeclaration"})
 public class SquashEntry {
-  // Used in test.
-  static final String DATE_RFC_2822 = "EEE, dd MMM yyyy HH:mm:ss Z";
-
-  private final ThreadLocal<DateFormat> dateFormatThreadLocal = new ThreadLocal<DateFormat>();
+  private static final String DATE_RFC_2822 = "EEE, dd MMM yyyy HH:mm:ss Z";
+  private static final ThreadLocal<DateFormat> dateFormatThreadLocal =
+      new ThreadLocal<DateFormat>();
 
   // Things that do not change per entry but should still be gson'd.
   private final String client;
