@@ -119,7 +119,7 @@ public class SquashEntryTest {
     final SquashEntry logEntry = factory.create(logMessage, exception);
     SquashEntry deserialized = serializeAndDeserialize(logEntry);
     assertThat(deserialized.backtraces).isNotEmpty();
-    final List<Object> backtrace = deserialized.backtraces.get(0);
+    List<Object> backtrace = deserialized.backtraces.get(0);
     assertThat(backtrace.get(0)).isEqualTo(SquashBacktrace.THREAD_0);
     assertThat(backtrace.get(1)).isEqualTo(true);
     List<List<Object>> stackElements = (List<List<Object>>) backtrace.get(2);
@@ -134,13 +134,19 @@ public class SquashEntryTest {
     assertThat(nested1.class_name).isEqualTo(nestedException.getClass().getName());
     assertThat(nested1.ivars).isEmpty();
     assertThat(nested1.message).isEqualTo(nestedExceptionMessage);
-    assertBacktracesMatch(nestedStackTrace, nested1.backtraces);
+    backtrace = nested1.backtraces.get(0);
+    assertThat(backtrace.get(0)).isEqualTo(SquashBacktrace.THREAD_0);
+    assertThat(backtrace.get(1)).isEqualTo(true);
+    assertBacktracesMatch(nestedStackTrace, (List<List<Object>>) backtrace.get(2));
 
     final SquashBacktrace.NestedException nested2 = nestedExceptions.get(1);
     assertThat(nested2.class_name).isEqualTo(doublyNestedException.getClass().getName());
     assertThat(nested2.ivars).isEmpty();
     assertThat(nested2.message).isEqualTo(doublyNestedExceptionMessage);
-    assertBacktracesMatch(doublyNestedStackTrace, nested2.backtraces);
+    backtrace = nested1.backtraces.get(0);
+    assertThat(backtrace.get(0)).isEqualTo(SquashBacktrace.THREAD_0);
+    assertThat(backtrace.get(1)).isEqualTo(true);
+    assertBacktracesMatch(nestedStackTrace, (List<List<Object>>) backtrace.get(2));
   }
 
   private class EntryFactory {

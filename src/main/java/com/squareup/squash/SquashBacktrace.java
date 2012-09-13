@@ -77,7 +77,7 @@ public final class SquashBacktrace {
     }
     final Throwable cause = error.getCause();
     NestedException doc = new NestedException(cause.getClass().getName(), cause.getMessage(),
-        getStacktraceArray(cause), getIvars(cause));
+        getBacktraces(cause), getIvars(cause));
     nestedExceptions.add(doc);
     // Exceptions all the way down!
     populateNestedExceptions(nestedExceptions, cause);
