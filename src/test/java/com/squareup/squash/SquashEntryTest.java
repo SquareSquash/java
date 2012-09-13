@@ -64,10 +64,11 @@ public class SquashEntryTest {
     for (int i = 0, stackElementsSize = stackElements.size(); i < stackElementsSize; i++) {
       List<Object> stackElement = stackElements.get(i);
       StackTraceElement expected = myLittleStackTrace[i];
-      assertThat(stackElement.get(0)).isEqualTo(expected.getFileName());
-      assertThat(((Double) stackElement.get(1)).intValue()).isEqualTo(expected.getLineNumber());
-      assertThat(stackElement.get(2)).isEqualTo(expected.getMethodName());
-      assertThat(stackElement.get(3)).isEqualTo(expected.getClassName());
+      assertThat(stackElement.get(0)).isEqualTo(SquashBacktrace.JAVA_PREFIX);
+      assertThat(stackElement.get(1)).isEqualTo(expected.getFileName());
+      assertThat(((Double) stackElement.get(2)).intValue()).isEqualTo(expected.getLineNumber());
+      assertThat(stackElement.get(3)).isEqualTo(expected.getMethodName());
+      assertThat(stackElement.get(4)).isEqualTo(expected.getClassName());
     }
   }
 
