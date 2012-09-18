@@ -13,8 +13,11 @@ import java.util.Map;
 @SuppressWarnings({ "FieldCanBeLocal", "UnusedDeclaration" })
 public class SquashEntry {
   private static final String DATE_RFC_2822 = "EEE, dd MMM yyyy HH:mm:ss Z";
-  private static final ThreadLocal<DateFormat> DATE_FORMAT_THREAD_LOCAL =
-      new ThreadLocal<DateFormat>();
+  private static final ThreadLocal<DateFormat> DATE_FORMAT_THREAD_LOCAL = new ThreadLocal<DateFormat>() {
+    @Override protected DateFormat initialValue() {
+      return new SimpleDateFormat(DATE_RFC_2822);
+    }
+  };
 
   // Things that do not change per entry but should still be gson'd.
   private final String client;
@@ -55,11 +58,6 @@ public class SquashEntry {
     this.message = error == null ? null : error.getMessage();
     this.api_key = apiKey;
     this.user_id = userId;
-    DateFormat dateFormat = DATE_FORMAT_THREAD_LOCAL.get();
-    if (dateFormat == null) {
-      dateFormat = new SimpleDateFormat(DATE_RFC_2822);
-      DATE_FORMAT_THREAD_LOCAL.set(dateFormat);
-    }
-    this.occurred_at = dateFormat.format(new Date());
+    this.occurred_at = DATE_FORMAT_THREAD_LOCAL.get().format(new Date());
   }
 }

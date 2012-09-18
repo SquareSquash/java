@@ -2,9 +2,10 @@
 package com.squareup.squash;
 
 import com.google.gson.Gson;
+import org.junit.Test;
+
 import java.io.IOException;
 import java.util.List;
-import org.junit.Test;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -48,7 +49,7 @@ public class SquashEntryTest {
     SquashEntry deserialized = serializeAndDeserialize(logEntry);
     assertThat(deserialized.backtraces).isNotEmpty();
     final List<Object> backtrace = deserialized.backtraces.get(0);
-    assertThat(backtrace.get(0)).isEqualTo(SquashBacktrace.THREAD_0);
+    assertThat(backtrace.get(0)).isEqualTo(Thread.currentThread().getName());
     assertThat(backtrace.get(1)).isEqualTo(true);
     List<List<Object>> stackElements = (List<List<Object>>) backtrace.get(2);
     assertBacktracesMatch(myLittleStackTrace, stackElements);
@@ -121,7 +122,7 @@ public class SquashEntryTest {
     SquashEntry deserialized = serializeAndDeserialize(logEntry);
     assertThat(deserialized.backtraces).isNotEmpty();
     List<Object> backtrace = deserialized.backtraces.get(0);
-    assertThat(backtrace.get(0)).isEqualTo(SquashBacktrace.THREAD_0);
+    assertThat(backtrace.get(0)).isEqualTo(Thread.currentThread().getName());
     assertThat(backtrace.get(1)).isEqualTo(true);
     List<List<Object>> stackElements = (List<List<Object>>) backtrace.get(2);
     assertBacktracesMatch(myLittleStackTrace, stackElements);
@@ -136,7 +137,7 @@ public class SquashEntryTest {
     assertThat(nested1.ivars).isEmpty();
     assertThat(nested1.message).isEqualTo(nestedExceptionMessage);
     backtrace = nested1.backtraces.get(0);
-    assertThat(backtrace.get(0)).isEqualTo(SquashBacktrace.THREAD_0);
+    assertThat(backtrace.get(0)).isEqualTo(Thread.currentThread().getName());
     assertThat(backtrace.get(1)).isEqualTo(true);
     assertBacktracesMatch(nestedStackTrace, (List<List<Object>>) backtrace.get(2));
 
@@ -145,7 +146,7 @@ public class SquashEntryTest {
     assertThat(nested2.ivars).isEmpty();
     assertThat(nested2.message).isEqualTo(doublyNestedExceptionMessage);
     backtrace = nested1.backtraces.get(0);
-    assertThat(backtrace.get(0)).isEqualTo(SquashBacktrace.THREAD_0);
+    assertThat(backtrace.get(0)).isEqualTo(Thread.currentThread().getName());
     assertThat(backtrace.get(1)).isEqualTo(true);
     assertBacktracesMatch(nestedStackTrace, (List<List<Object>>) backtrace.get(2));
   }

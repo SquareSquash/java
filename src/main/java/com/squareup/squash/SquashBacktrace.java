@@ -11,8 +11,6 @@ import java.util.Map;
 /** Creates the Squash stacktrace format for serialization by gson. */
 public final class SquashBacktrace {
 
-  // TODO get the actual thread identifier if we can.
-  public static final String THREAD_0 = "Thread 0";
   // This lets Squash know that the stacktrace is java-style and can contain obfuscated classes.
   public static final String JAVA_PREFIX = "_JAVA_";
 
@@ -25,11 +23,11 @@ public final class SquashBacktrace {
       return null;
     }
     final ArrayList<List<Object>> threadList = new ArrayList<List<Object>>();
-    final ArrayList<Object> thread0 = new ArrayList<Object>();
-    thread0.add(THREAD_0);
-    thread0.add(true);
-    thread0.add(getStacktraceArray(error));
-    threadList.add(thread0);
+    final ArrayList<Object> currentThread = new ArrayList<Object>();
+    currentThread.add(Thread.currentThread().getName());
+    currentThread.add(true);
+    currentThread.add(getStacktraceArray(error));
+    threadList.add(currentThread);
     return threadList;
   }
 
