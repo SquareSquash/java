@@ -74,7 +74,8 @@ public final class SquashBacktrace {
    */
   public static void populateNestedExceptions(List<NestedException> nestedExceptions,
       Throwable error) {
-    if (error == null || error.getCause() == null) {
+    // Only keep processing if the "cause" exception is set and != the "parent" exception.
+    if (error == null || error.getCause() == null || error.getCause() == error) {
       return;
     }
     final Throwable cause = error.getCause();
