@@ -20,7 +20,8 @@ Usage
 -----
 
 The `SquashEntry` class is meant to be extended and then serialized with your
-choice of gson library for transmission to your Squash server.
+choice of json library for transmission to your Squash server.  We recommend 
+using gson, but any auto-field-name-detecting library will do.
 
 First, extend `SquashEntry` and include any additional occurrence data you wish
 to send to Squash. See the `Occurrence` class documentation in the Squash web
