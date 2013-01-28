@@ -24,35 +24,27 @@ import java.util.Map;
 /** Creates the Squash stacktrace format for serialization by gson. */
 public final class SquashBacktrace {
 
-  // This lets Squash know that the stacktrace is java-style and can contain obfuscated classes.
-  public static final String JAVA_PREFIX = "_JAVA_";
-
   private SquashBacktrace() {
     // Should not be instantiated: this is a utility class.
   }
 
-  public static List<List<Object>> getBacktraces(Throwable error) {
+  public static List<SquashException> getBacktraces(Throwable error) {
     if (error == null) {
       return null;
     }
-    final ArrayList<List<Object>> threadList = new ArrayList<List<Object>>();
-    final ArrayList<Object> currentThread = new ArrayList<Object>();
-    currentThread.add(Thread.currentThread().getName());
-    currentThread.add(true);
-    currentThread.add(getStacktraceArray(error));
+    final List<SquashException> threadList = new ArrayList<SquashException>();
+    final SquashException currentThread =
+        new SquashException(Thread.currentThread().getName(), true, getStacktraceArray(error));
     threadList.add(currentThread);
     return threadList;
   }
 
-  private static List<List<Object>> getStacktraceArray(Throwable error) {
-    List<List<Object>> stackElems = new ArrayList<List<Object>>();
+  private static List<StackElement> getStacktraceArray(Throwable error) {
+    List<StackElement> stackElems = new ArrayList<StackElement>();
     for (StackTraceElement element : error.getStackTrace()) {
-      List<Object> elementList = new ArrayList<Object>();
-      elementList.add(JAVA_PREFIX);
-      elementList.add(element.getFileName());
-      elementList.add(element.getLineNumber());
-      elementList.add(element.getMethodName());
-      elementList.add(element.getClassName());
+      StackElement elementList =
+          new StackElement(element.getClassName(), element.getFileName(), element.getLineNumber(),
+              element.getMethodName());
       stackElems.add(elementList);
     }
     return stackElems;
@@ -92,26 +84,59 @@ public final class SquashBacktrace {
       return;
     }
     final Throwable cause = error.getCause();
-    NestedException doc = new NestedException(cause.getClass().getName(), cause.getMessage(),
-        getBacktraces(cause), getIvars(cause));
+    NestedException doc =
+        new NestedException(cause.getClass().getName(), cause.getMessage(), getBacktraces(cause),
+            getIvars(cause));
     nestedExceptions.add(doc);
     // Exceptions all the way down!
     populateNestedExceptions(nestedExceptions, cause);
   }
 
+  /** Wrapper object for top-level exceptions. */
+  static final class SquashException {
+    final String name;
+    final boolean faulted;
+    final List<StackElement> backtrace;
+
+    public SquashException(String name, boolean faulted, List<StackElement> backtrace) {
+      this.backtrace = backtrace;
+      this.name = name;
+      this.faulted = faulted;
+    }
+  }
+
   /** Wrapper object for nested exceptions. */
-  public static class NestedException {
+  static final class NestedException {
     final String class_name;
     final String message;
-    final List<List<Object>> backtraces;
+    final List<SquashException> backtraces;
     final Map<String, Object> ivars;
 
-    public NestedException(String className, String message, List<List<Object>> backtraces,
+    public NestedException(String className, String message, List<SquashException> backtraces,
         Map<String, Object> ivars) {
       this.class_name = className;
       this.message = message;
       this.backtraces = backtraces;
       this.ivars = ivars;
+    }
+  }
+
+  /** Wrapper object for a stacktrace entry. */
+  static final class StackElement {
+    // This field is necessary so Squash knows that this is a java stacktrace that might need
+    // obfuscation lookup and git filename lookup.  Our stacktrace elements don't give us the full
+    // path to the java file, so Squash has to do a SCM lookup to try and do its cause analysis.
+    @SuppressWarnings("UnusedDeclaration") final String type = "obfuscated";
+    final String file;
+    final int line;
+    final String symbol;
+    final String class_name;
+
+    private StackElement(String className, String file, int line, String methodName) {
+      this.class_name = className;
+      this.file = file;
+      this.line = line;
+      this.symbol = methodName;
     }
   }
 }

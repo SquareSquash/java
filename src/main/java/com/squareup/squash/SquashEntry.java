@@ -46,7 +46,7 @@ public class SquashEntry {
   private final String occurred_at;
 
   // Used in tests.
-  final List<List<Object>> backtraces;
+  final List<SquashBacktrace.SquashException> backtraces;
   final Map<String, Object> ivars;
   final List<SquashBacktrace.NestedException> parent_exceptions;
   final String class_name;
