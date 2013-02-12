@@ -72,6 +72,41 @@ public class SquashEntryTest {
     assertThat(deserialized.class_name).isEqualTo(exception.getClass().getName());
   }
 
+  @Test public void testExceptionWithNoMessage() throws Exception {
+    final Throwable exception = mock(Throwable.class);
+
+    StackTraceElement s0 = new StackTraceElement("com.jake", "CantProgram",
+        "core-android/src/com/jake/Brain.java", 50);
+    StackTraceElement s1 = new StackTraceElement("com.jake", "IsDrunk",
+        "core-android/src/com/jake/Status.java", 510);
+    StackTraceElement[] stackTrace = { s0, s1 };
+
+    when(exception.getMessage()).thenReturn(null);
+    when(exception.getStackTrace()).thenReturn(stackTrace);
+
+    String logMessage = "Jake can't program";
+    final SquashEntry logEntry = factory.create(logMessage, exception);
+    SquashEntry deserialized = serializeAndDeserialize(logEntry);
+    assertThat(deserialized.message).isEqualTo(logMessage);
+  }
+
+  @Test public void testExceptionWithNoMessageOrLogMessage() throws Exception {
+    final Throwable exception = mock(Throwable.class);
+
+    StackTraceElement s0 = new StackTraceElement("com.jake", "CantProgram",
+        "core-android/src/com/jake/Brain.java", 50);
+    StackTraceElement s1 = new StackTraceElement("com.jake", "IsDrunk",
+        "core-android/src/com/jake/Status.java", 510);
+    StackTraceElement[] stackTrace = { s0, s1 };
+
+    when(exception.getMessage()).thenReturn(null);
+    when(exception.getStackTrace()).thenReturn(stackTrace);
+
+    final SquashEntry logEntry = factory.create(null, exception);
+    SquashEntry deserialized = serializeAndDeserialize(logEntry);
+    assertThat(deserialized.message).isEqualTo("No message");
+  }
+
   private void assertBacktracesMatch(StackTraceElement[] myLittleStackTrace,
       List<SquashBacktrace.StackElement> stackElements) {
     for (int i = 0, stackElementsSize = stackElements.size(); i < stackElementsSize; i++) {
