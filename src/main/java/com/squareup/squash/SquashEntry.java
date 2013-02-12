@@ -53,11 +53,11 @@ public class SquashEntry {
   final String message;
   final String log_message;
 
-  public SquashEntry(String client, String apiKey, String message, Throwable error,
+  public SquashEntry(String client, String apiKey, String logMessage, Throwable error,
       String appVersion, int versionCode, String buildSha, String deviceId, String endpoint,
       String userId, String environment) {
     this.client = client;
-    this.log_message = message;
+    this.log_message = logMessage;
     this.version = appVersion;
     this.revision = buildSha;
     this.build = "" + versionCode;
@@ -68,9 +68,22 @@ public class SquashEntry {
     SquashBacktrace.populateNestedExceptions(parent_exceptions, error);
     this.ivars = SquashBacktrace.getIvars(error);
     this.class_name = error == null ? null : error.getClass().getName();
-    this.message = error == null ? null : error.getMessage();
+    this.message = createMessage(error, logMessage);
     this.api_key = apiKey;
     this.user_id = userId;
     this.occurred_at = DATE_FORMAT_THREAD_LOCAL.get().format(new Date());
+  }
+
+  // Squash requires a non-empty message field.
+  private static String createMessage(Throwable error, String logMessage) {
+    String message;
+    if (error != null && error.getMessage() != null) {
+      message = error.getMessage();
+    } else if (logMessage != null) {
+      message = logMessage;
+    } else {
+      message = "No message";
+    }
+    return message;
   }
 }
