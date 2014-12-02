@@ -30,10 +30,12 @@ public class SquashBacktraceTest{
     assertThat(SquashBacktrace.getBacktraces(new Error())).isNotNull();
   }
 
+  @Test public void testGetBacktraces_WhenGivenThrowable_ReturnsOnlyOneException(){
+    assertThat(SquashBacktrace.getBacktraces(new Throwable()).size()).isEqualTo(1);
+  }
 
-
-
-
-
+  @Test public void testGetBacktraces_WhenGivenThrowable_ReturnsSquashException(){
+    assertThat(SquashBacktrace.getBacktraces(new Throwable()).get(0).getClass()).isEqualTo(SquashBacktrace.SquashException.class);
+  }
 }
 
