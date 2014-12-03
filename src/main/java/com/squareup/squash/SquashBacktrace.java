@@ -25,7 +25,7 @@ import java.util.Map;
 public final class SquashBacktrace {
 
   private SquashBacktrace() {
-    // Should not be instantiated: this is a utility class.
+    throw new UnsupportedOperationException("Should not be instantiated: this is a utility class");
   }
 
   public static List<SquashException> getBacktraces(Throwable error) {
