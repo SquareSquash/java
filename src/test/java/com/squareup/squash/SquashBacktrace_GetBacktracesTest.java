@@ -54,7 +54,7 @@ public class SquashBacktrace_GetBacktracesTest{
     assertThat(SquashBacktrace.getBacktraces(new Throwable()).get(0).backtrace.size()).isNotEqualTo(0);
   }
 
-  @Test public void testGetBacktraces_WhenGivenThrowableWithStacktrace_StacktraceIsTransformedToBacktrace(){
+  @Test public void testGetBacktraces_WhenGivenThrowableWithStacktrace_StacktraceIsCorrectlyTransformedIntoBacktrace(){
     int expectedTraceSize = 10;
     StackTraceElement[] expectedStacktrace = new StackTraceElement[expectedTraceSize];
     for(int i = 0; i < expectedTraceSize; i++)
