@@ -56,21 +56,29 @@ public class SquashBacktrace_GetBacktracesTest{
 
   @Test public void testGetBacktraces_WhenGivenThrowableWithStacktrace_StacktraceIsCorrectlyTransformedIntoBacktrace(){
     int expectedTraceSize = 10;
-    StackTraceElement[] expectedStacktrace = new StackTraceElement[expectedTraceSize];
-    for(int i = 0; i < expectedTraceSize; i++)
-      expectedStacktrace[i] = new StackTraceElement(this.getClass().getName(), "aUnitTestMethod()", "UnitTestFile.java", i);
-    Throwable throwable =  new Throwable();
-    throwable.setStackTrace(expectedStacktrace);
+    String expectedTestFileName = "UnitTestFile.java"; 
+    String expectedTestClassName = this.getClass().getName();
+    String expectedTestMethodName = "aUnitTestMethod()";
+
+    Throwable throwable = new Throwable();
+    throwable.setStackTrace(setUpFixtureStackTrace(expectedTraceSize, expectedTestFileName, expectedTestClassName, expectedTestMethodName));
 
     assertThat(SquashBacktrace.getBacktraces(throwable).get(0).backtrace).hasSize(expectedTraceSize);
     
     int lineNumber = 0;
     for(SquashBacktrace.StackElement stackElement : SquashBacktrace.getBacktraces(throwable).get(0).backtrace) {
-      assertThat(stackElement.class_name).isEqualTo(this.getClass().getName());
-      assertThat(stackElement.symbol).isEqualTo("aUnitTestMethod()");
-      assertThat(stackElement.file).isEqualTo("UnitTestFile.java");
+      assertThat(stackElement.class_name).isEqualTo(expectedTestClassName);
+      assertThat(stackElement.symbol).isEqualTo(expectedTestMethodName);
+      assertThat(stackElement.file).isEqualTo(expectedTestFileName);
       assertThat(stackElement.line).isEqualTo(lineNumber++);
     }
+  }
+
+  private StackTraceElement[] setUpFixtureStackTrace(int traceSize, String fileName, String className, String methodName) {
+    StackTraceElement[] expectedStacktrace = new StackTraceElement[traceSize];
+    for(int i = 0; i < traceSize; i++)
+      expectedStacktrace[i] = new StackTraceElement(className, methodName, fileName, i);
+    return expectedStacktrace;
   }
 }
 
