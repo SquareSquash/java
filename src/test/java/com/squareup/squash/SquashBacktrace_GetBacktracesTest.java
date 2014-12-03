@@ -21,7 +21,7 @@ import static org.fest.assertions.Assertions.assertThat;
 
 public class SquashBacktrace_GetBacktracesTest{
 
-  @Test public void testGetBacktraces_WhenErrorIsNull_ReturnsNull(){
+  @Test public void testGetBacktraces_WhenArgumentIsNull_ReturnsNull(){
     assertThat(SquashBacktrace.getBacktraces(null)).isNull();
   }
 
