@@ -46,4 +46,26 @@ public class SquashBacktrace_PopulateNestedExceptionsTest{
     SquashBacktrace.populateNestedExceptions(listOfThree, null);
     assertThat(listOfThree).hasSize(3);
   }
+
+  @Test public void populateNestedException_WhenGivenThrowableWithOneNestedException_ReturnsItsNestedException() {
+    String expectedExceptionMessage = "Nested Exception";
+    Throwable expectedCause = new Throwable(expectedExceptionMessage);
+    Throwable parent = new Throwable(expectedCause);
+    List<SquashBacktrace.NestedException> actualNestedExceptions = new ArrayList<SquashBacktrace.NestedException>();
+    SquashBacktrace.populateNestedExceptions(actualNestedExceptions, parent);
+    
+    assertThat(actualNestedExceptions).hasSize(1);
+    assertThat(actualNestedExceptions.get(0)).isNotNull();
+
+    String expectedClassName = parent.getClass().getName();
+    assertThat(actualNestedExceptions.get(0).class_name).isEqualTo(expectedClassName);
+    assertThat(actualNestedExceptions.get(0).message).isEqualTo(expectedExceptionMessage);
+
+    assertThat(actualNestedExceptions.get(0).backtraces).isNotEmpty();
+    assertThat(actualNestedExceptions.get(0).backtraces).hasSize(1);
+    assertThat(actualNestedExceptions.get(0).backtraces.get(0)).isNotNull();
+    assertThat(actualNestedExceptions.get(0).backtraces.get(0).getClass()).isEqualTo(SquashBacktrace.SquashException.class);
+
+    assertThat(actualNestedExceptions.get(0).ivars).isNotNull();
+  }
 }
