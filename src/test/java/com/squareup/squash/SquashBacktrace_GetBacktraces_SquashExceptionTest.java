@@ -22,30 +22,37 @@ import static org.fest.assertions.Assertions.assertThat;
 public class SquashBacktrace_GetBacktraces_SquashExceptionTest {
 
   private SquashBacktrace.SquashException fixture;
+  private String expectedName;
 
   @Before public void setUp(){
+    expectedName = this.getClass().getName() + "_UnitTestThread";
+    Thread.currentThread().setName(expectedName);
+
     fixture = SquashBacktrace.getBacktraces(new Throwable()).get(0);
   }
 
-  @Test public void testGetBacktraces_WhenGivenThrowable_ReturnsSquashException(){
-    assertThat(fixture.getClass()).isEqualTo(SquashBacktrace.SquashException.class);
-  }
+  @Test public void testGetBacktraces_WhenGivenThrowable_ReturnsSquashExceptionWithCorrectAttributes(){
+    assertSquashExceptionFaultedFlag();
+    assertSquashExceptionName();
+    assertSquashExceptionBacktrace();
+   }
 
-  @Test public void testGetBacktraces_WhenGivenThrowable_SquashExceptionIsFaulted(){
+  private void assertSquashExceptionFaultedFlag(){
     assertThat(fixture.faulted).isEqualTo(true);
   }
 
-  @Test public void testGetBacktraces_WhenGivenThrowable_SquashExceptionNameIsEqlToCurrentThreadName(){
-    String expectedName = this.getClass().getName() + "_UnitTestThread";
-    Thread.currentThread().setName(expectedName);
+  private void assertSquashExceptionName(){
     fixture = SquashBacktrace.getBacktraces(new Throwable()).get(0);
     assertThat(fixture.name).isEqualTo(expectedName);
-  }
-
-  @Test public void testGetBacktraces_WhenGivenThrowable_SquashExceptionBacktraceIsNotEmpty(){
+  }  
+ 
+  private void assertSquashExceptionBacktrace(){
     assertThat(fixture.backtrace).isNotNull();
     assertThat(fixture.backtrace.size()).isNotEqualTo(0);
   }
+
+
+
 
   @Test public void testGetBacktraces_WhenGivenThrowableWithStacktrace_StacktraceIsCorrectlyTransformedIntoBacktrace(){
     int expectedTraceSize = 10;
