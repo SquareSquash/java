@@ -62,14 +62,14 @@ public class SquashBacktrace_GetBacktraces_SquashExceptionTest {
     int expectedTraceSize = 10;
     
     Throwable throwable = new Throwable();
-    throwable.setStackTrace(setUpFixtureStackTrace(expectedTraceSize, expectedFileName, expectedClassName, expectedMethodName));
+    throwable.setStackTrace(setUpFixtureStackTrace(expectedTraceSize));
     assertBacktrace(throwable, expectedTraceSize);
    }
 
-  private StackTraceElement[] setUpFixtureStackTrace(int traceSize, String fileName, String className, String methodName) {
+  private StackTraceElement[] setUpFixtureStackTrace(int traceSize) {
     StackTraceElement[] expectedStacktrace = new StackTraceElement[traceSize];
     for(int i = 0; i < traceSize; i++)
-      expectedStacktrace[i] = new StackTraceElement(className, methodName, fileName, i);
+      expectedStacktrace[i] = new StackTraceElement(expectedClassName, expectedMethodName, expectedFileName, i);
     return expectedStacktrace;
   }
 
