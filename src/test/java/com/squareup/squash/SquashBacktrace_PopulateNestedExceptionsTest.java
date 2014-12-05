@@ -49,24 +49,32 @@ public class SquashBacktrace_PopulateNestedExceptionsTest{
   }
 
   @Test public void populateNestedException_WhenGivenThrowableWithOneNestedException_ReturnsItsNestedException() {
+    String expectedClassName = Throwable.class.getName();
     String expectedExceptionMessage = "Nested Exception";
     Throwable expectedCause = new Throwable(expectedExceptionMessage);
     Throwable parent = new Throwable(expectedCause);
-    List<SquashBacktrace.NestedException> actualNestedExceptions = new ArrayList<SquashBacktrace.NestedException>();
+
+    List<SquashBacktrace.NestedException> actualNestedExceptions = listOfNestedExceptions(0);
     SquashBacktrace.populateNestedExceptions(actualNestedExceptions, parent);
-    
-    assertThat(actualNestedExceptions).hasSize(1);
-    assertThat(actualNestedExceptions.get(0)).isNotNull();
+    assertNestedExceptionAttributes(actualNestedExceptions.get(0), expectedExceptionMessage, expectedClassName);
+  }
 
-    String expectedClassName = parent.getClass().getName();
-    assertThat(actualNestedExceptions.get(0).class_name).isEqualTo(expectedClassName);
-    assertThat(actualNestedExceptions.get(0).message).isEqualTo(expectedExceptionMessage);
+  private void assertNestedExceptionAttributes(SquashBacktrace.NestedException fixture, String expectedExceptionMessage, String expectedClassName){
+    assertThat(fixture).isNotNull();
+    assertThat(fixture.class_name).isEqualTo(expectedClassName);
+    assertThat(fixture.message).isEqualTo(expectedExceptionMessage);
+    assertThat(fixture.ivars).isNotNull();
+    assertNestedExceptionBacktraces(fixture);
+  }
 
-    assertThat(actualNestedExceptions.get(0).backtraces).isNotEmpty();
-    assertThat(actualNestedExceptions.get(0).backtraces).hasSize(1);
-    assertThat(actualNestedExceptions.get(0).backtraces.get(0)).isNotNull();
-    assertThat(actualNestedExceptions.get(0).backtraces.get(0).getClass()).isEqualTo(SquashBacktrace.SquashException.class);
+  private void assertNestedExceptionBacktraces(SquashBacktrace.NestedException fixture){
+    assertThat(fixture.backtraces).isNotEmpty();
+    assertThat(fixture.backtraces).hasSize(1);
+    assertSquashExceptionAttributes(fixture.backtraces.get(0));
+  }
 
-    assertThat(actualNestedExceptions.get(0).ivars).isNotNull();
+  private void assertSquashExceptionAttributes(SquashBacktrace.SquashException fixture){
+    assertThat(fixture).isNotNull();
+    assertThat(fixture.getClass()).isEqualTo(SquashBacktrace.SquashException.class);
   }
 }
