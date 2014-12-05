@@ -23,7 +23,7 @@ import static org.fest.assertions.Assertions.assertThat;
 
 public class SquashBacktrace_PopulateNestedExceptionsTest{
 
-  @Test public void populateNestedException_WhenGivenNullThrowable_NestedExceptionListRemainsUnchanged(){
+  @Test public void populateNestedException_WhenGivenNullThrowable_NestedExceptionsRemainsUnchanged(){
     List<SquashBacktrace.NestedException> emptyList = new ArrayList<SquashBacktrace.NestedException>();
     SquashBacktrace.populateNestedExceptions(emptyList, null);
     assertThat(emptyList).isEmpty();
