@@ -23,10 +23,17 @@ public class SquashBacktrace_GetBacktraces_SquashExceptionTest {
 
   private SquashBacktrace.SquashException fixture;
   private String expectedName;
+  private String expectedFileName;
+  private String expectedClassName;
+  private String expectedMethodName;
 
   @Before public void setUp(){
     expectedName = this.getClass().getName() + "_UnitTestThread";
     Thread.currentThread().setName(expectedName);
+   
+    expectedFileName = "UnitTestFile.java";
+    expectedClassName = this.getClass().getName();
+    expectedMethodName = "aUnitTestMethod()";
 
     fixture = SquashBacktrace.getBacktraces(new Throwable()).get(0);
   }
@@ -51,33 +58,33 @@ public class SquashBacktrace_GetBacktraces_SquashExceptionTest {
     assertThat(fixture.backtrace.size()).isNotEqualTo(0);
   }
 
-
-
-
   @Test public void testGetBacktraces_WhenGivenThrowableWithStacktrace_StacktraceIsCorrectlyTransformedIntoBacktrace(){
     int expectedTraceSize = 10;
-    String expectedTestFileName = "UnitTestFile.java";
-    String expectedTestClassName = this.getClass().getName();
-    String expectedTestMethodName = "aUnitTestMethod()";
-
+    
     Throwable throwable = new Throwable();
-    throwable.setStackTrace(setUpFixtureStackTrace(expectedTraceSize, expectedTestFileName, expectedTestClassName, expectedTestMethodName));
-
-    assertThat(SquashBacktrace.getBacktraces(throwable).get(0).backtrace).hasSize(expectedTraceSize);
-
-    int lineNumber = 0;
-    for(SquashBacktrace.StackElement stackElement : SquashBacktrace.getBacktraces(throwable).get(0).backtrace) {
-      assertThat(stackElement.class_name).isEqualTo(expectedTestClassName);
-      assertThat(stackElement.symbol).isEqualTo(expectedTestMethodName);
-      assertThat(stackElement.file).isEqualTo(expectedTestFileName);
-      assertThat(stackElement.line).isEqualTo(lineNumber++);
-    }
-  }
+    throwable.setStackTrace(setUpFixtureStackTrace(expectedTraceSize, expectedFileName, expectedClassName, expectedMethodName));
+    assertBacktrace(throwable, expectedTraceSize);
+   }
 
   private StackTraceElement[] setUpFixtureStackTrace(int traceSize, String fileName, String className, String methodName) {
     StackTraceElement[] expectedStacktrace = new StackTraceElement[traceSize];
     for(int i = 0; i < traceSize; i++)
       expectedStacktrace[i] = new StackTraceElement(className, methodName, fileName, i);
     return expectedStacktrace;
+  }
+
+  private void assertBacktrace(Throwable throwable, int expectedTraceSize){
+    assertThat(SquashBacktrace.getBacktraces(throwable).get(0).backtrace).hasSize(expectedTraceSize);
+
+    int lineNumber = 0;
+    for(SquashBacktrace.StackElement stackElement : SquashBacktrace.getBacktraces(throwable).get(0).backtrace)
+      assertStackElementAttributes(stackElement, expectedTraceSize, lineNumber++);
+  }
+
+  private void assertStackElementAttributes(SquashBacktrace.StackElement stackElement, int expectedTraceSize, int lineNumber){
+    assertThat(stackElement.class_name).isEqualTo(expectedClassName);
+    assertThat(stackElement.symbol).isEqualTo(expectedMethodName);
+    assertThat(stackElement.file).isEqualTo(expectedFileName);
+    assertThat(stackElement.line).isEqualTo(lineNumber++);
   }
 }
