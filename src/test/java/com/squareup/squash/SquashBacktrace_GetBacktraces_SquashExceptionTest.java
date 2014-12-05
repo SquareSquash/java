@@ -58,13 +58,16 @@ public class SquashBacktrace_GetBacktraces_SquashExceptionTest {
     assertThat(fixture.backtrace.size()).isNotEqualTo(0);
   }
 
-  @Test public void testGetBacktraces_WhenGivenThrowableWithStacktrace_StacktraceIsCorrectlyTransformedIntoBacktrace(){
-    int expectedTraceSize = 10;
-    
+  @Test public void testGetBacktraces_WhenGivenThrowableWithStacktraceOfTen_EntireStacktraceIsTransformedIntoBacktrace(){
+    int expectedTraceSize = 10;    
+    assertBacktrace(throwableWithStackTrace(expectedTraceSize), expectedTraceSize);
+  }
+
+  private Throwable throwableWithStackTrace(int traceSize){
     Throwable throwable = new Throwable();
-    throwable.setStackTrace(setUpFixtureStackTrace(expectedTraceSize));
-    assertBacktrace(throwable, expectedTraceSize);
-   }
+    throwable.setStackTrace(setUpFixtureStackTrace(traceSize));
+    return throwable;
+  }
 
   private StackTraceElement[] setUpFixtureStackTrace(int traceSize) {
     StackTraceElement[] expectedStacktrace = new StackTraceElement[traceSize];
