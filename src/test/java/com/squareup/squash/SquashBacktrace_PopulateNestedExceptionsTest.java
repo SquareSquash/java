@@ -76,5 +76,8 @@ public class SquashBacktrace_PopulateNestedExceptionsTest{
   private void assertSquashExceptionAttributes(SquashBacktrace.SquashException fixture){
     assertThat(fixture).isNotNull();
     assertThat(fixture.getClass()).isEqualTo(SquashBacktrace.SquashException.class);
+    assertThat(fixture.name).isNotNull();
+    assertThat(fixture.faulted).isEqualTo(true);
+    assertThat(fixture.backtrace).isNotNull();
   }
 }
