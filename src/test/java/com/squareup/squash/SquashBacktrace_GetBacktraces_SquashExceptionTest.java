@@ -58,8 +58,38 @@ public class SquashBacktrace_GetBacktraces_SquashExceptionTest {
     assertThat(fixture.backtrace.size()).isNotEqualTo(0);
   }
 
-  @Test public void testGetBacktraces_WhenGivenThrowableWithStacktraceOfTen_EntireStacktraceIsTransformedIntoBacktrace(){
+  @Test public void testGetBacktraces_WhenGivenThrowableWithStacktraceOfTenLines_EntireStacktraceIsTransformedIntoBacktrace(){
     int expectedTraceSize = 10;    
+    assertBacktrace(throwableWithStackTrace(expectedTraceSize), expectedTraceSize);
+  }
+
+  @Test public void testGetBacktraces_WhenGivenThrowableWithStacktraceOfTwentyLines_EntireStacktraceIsTransformedIntoBacktrace(){
+    int expectedTraceSize = 20;    
+    assertBacktrace(throwableWithStackTrace(expectedTraceSize), expectedTraceSize);
+  }
+
+  @Test public void testGetBacktraces_WhenGivenThrowableWithStacktraceOfFiftyLines_EntireStacktraceIsTransformedIntoBacktrace(){
+    int expectedTraceSize = 50;    
+    assertBacktrace(throwableWithStackTrace(expectedTraceSize), expectedTraceSize);
+  }
+
+  @Test public void testGetBacktraces_WhenGivenThrowableWithStacktraceOfAHundredLines_EntireStacktraceIsTransformedIntoBacktrace(){
+    int expectedTraceSize = 100;    
+    assertBacktrace(throwableWithStackTrace(expectedTraceSize), expectedTraceSize);
+  }
+
+  @Test public void testGetBacktraces_WhenGivenThrowableWithStacktraceOfTwoHundredLines_EntireStacktraceIsTransformedIntoBacktrace(){
+    int expectedTraceSize = 200;    
+    assertBacktrace(throwableWithStackTrace(expectedTraceSize), expectedTraceSize);
+  }
+
+  @Test public void testGetBacktraces_WhenGivenThrowableWithStacktraceOfThreeHundredLines_EntireStacktraceIsTransformedIntoBacktrace(){
+    int expectedTraceSize = 500;    
+    assertBacktrace(throwableWithStackTrace(expectedTraceSize), expectedTraceSize);
+  }
+
+  @Test public void testGetBacktraces_WhenGivenThrowableWithStacktraceOfAThousandLines_EntireStacktraceIsTransformedIntoBacktrace(){
+    int expectedTraceSize = 1000;    
     assertBacktrace(throwableWithStackTrace(expectedTraceSize), expectedTraceSize);
   }
 
@@ -90,4 +120,6 @@ public class SquashBacktrace_GetBacktraces_SquashExceptionTest {
     assertThat(stackElement.file).isEqualTo(expectedFileName);
     assertThat(stackElement.line).isEqualTo(lineNumber++);
   }
+
+
 }
