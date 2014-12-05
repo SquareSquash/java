@@ -24,27 +24,28 @@ import static org.fest.assertions.Assertions.assertThat;
 public class SquashBacktrace_PopulateNestedExceptionsTest{
 
   @Test public void populateNestedException_WhenGivenNullThrowable_NestedExceptionListRemainsUnchanged(){
-    List<SquashBacktrace.NestedException> emptyList = new ArrayList<SquashBacktrace.NestedException>();
+    List<SquashBacktrace.NestedException> emptyList = listOfNestedExceptions(0);
     SquashBacktrace.populateNestedExceptions(emptyList, null);
     assertThat(emptyList).isEmpty();
 
-    List<SquashBacktrace.NestedException> listOfOne = new ArrayList<SquashBacktrace.NestedException>();
-    listOfOne.add(new SquashBacktrace.NestedException(this.getClass().getName(), "Nested Exception 1", null, null));
+    List<SquashBacktrace.NestedException> listOfOne = listOfNestedExceptions(1);
     SquashBacktrace.populateNestedExceptions(listOfOne, null);
     assertThat(listOfOne).hasSize(1);
 
-    List<SquashBacktrace.NestedException> listOfTwo = new ArrayList<SquashBacktrace.NestedException>();
-    listOfTwo.add(new SquashBacktrace.NestedException(this.getClass().getName(), "Nested Exception 1", null, null));
-    listOfTwo.add(new SquashBacktrace.NestedException(this.getClass().getName(), "Nested Exception 2", null, null));
+    List<SquashBacktrace.NestedException> listOfTwo = listOfNestedExceptions(2);
     SquashBacktrace.populateNestedExceptions(listOfTwo, null);
     assertThat(listOfTwo).hasSize(2);
 
-    List<SquashBacktrace.NestedException> listOfThree = new ArrayList<SquashBacktrace.NestedException>();
-    listOfThree.add(new SquashBacktrace.NestedException(this.getClass().getName(), "Nested Exception 1", null, null));
-    listOfThree.add(new SquashBacktrace.NestedException(this.getClass().getName(), "Nested Exception 2", null, null));
-    listOfThree.add(new SquashBacktrace.NestedException(this.getClass().getName(), "Nested Exception 3", null, null));
+    List<SquashBacktrace.NestedException> listOfThree = listOfNestedExceptions(3);
     SquashBacktrace.populateNestedExceptions(listOfThree, null);
     assertThat(listOfThree).hasSize(3);
+  }
+
+  private List<SquashBacktrace.NestedException> listOfNestedExceptions(int count){
+    List<SquashBacktrace.NestedException> nestedExceptions = new ArrayList<SquashBacktrace.NestedException>();
+    for(int i = 0; i < count; i++)
+      nestedExceptions.add(new SquashBacktrace.NestedException(this.getClass().getName(), "Nested Exception 1", null, null));
+    return nestedExceptions;
   }
 
   @Test public void populateNestedException_WhenGivenThrowableWithOneNestedException_ReturnsItsNestedException() {
