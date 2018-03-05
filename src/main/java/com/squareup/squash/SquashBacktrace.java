@@ -14,6 +14,8 @@
 
 package com.squareup.squash;
 
+import org.checkerframework.checker.nullness.qual.*;
+import static org.checkerframework.checker.nullness.NullnessUtil.castNonNull;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -27,8 +29,8 @@ public final class SquashBacktrace {
   private SquashBacktrace() {
     // Should not be instantiated: this is a utility class.
   }
-
-  public static List<SquashException> getBacktraces(Throwable error) {
+  //adding the annotation @Nullable as the return type may include a null value
+  public static @Nullable List<SquashException> getBacktraces(Throwable error) {
     if (error == null) {
       return null;
     }
@@ -42,15 +44,15 @@ public final class SquashBacktrace {
   private static List<StackElement> getStacktraceArray(Throwable error) {
     List<StackElement> stackElems = new ArrayList<StackElement>();
     for (StackTraceElement element : error.getStackTrace()) {
-      StackElement elementList =
-          new StackElement(element.getClassName(), element.getFileName(), element.getLineNumber(),
+     StackElement elementList =
+          new StackElement(element.getClassName(), castNonNull(element.getFileName()), element.getLineNumber(),
               element.getMethodName());
       stackElems.add(elementList);
-    }
+    }//used the method castNonNull because can't use the annotation @SuppressWarnings("nullness") for the expression, castNonNull is a method that  suppresses warnings from the Nullness Checker.
     return stackElems;
   }
-
-  public static Map<String, Object> getIvars(Throwable error) {
+  //adding the annotation @Nullable as the return type may include a null value
+  public static @Nullable Map<String, Object> getIvars(Throwable error) {
     if (error == null) {
       return null;
     }
@@ -63,7 +65,7 @@ public final class SquashBacktrace {
           if (!field.isAccessible()) {
             field.setAccessible(true);
           }
-          Object val = field.get(error);
+          Object val = castNonNull(field.get(error));//used the method castNonNull because can't use the annotation @SuppressWarnings("nullness") for the expression, castNonNull is a method that  suppresses warnings from the Nullness Checker.
           ivars.put(field.getName(), val);
         }
       } catch (IllegalAccessException e) {
@@ -85,8 +87,8 @@ public final class SquashBacktrace {
     }
     final Throwable cause = error.getCause();
     NestedException doc =
-        new NestedException(cause.getClass().getName(), cause.getMessage(), getBacktraces(cause),
-            getIvars(cause));
+        new NestedException(cause.getClass().getName(), castNonNull(cause.getMessage()), castNonNull(getBacktraces(cause)),
+            castNonNull(getIvars(cause)));//used the method castNonNull because can't use the annotation @SuppressWarnings("nullness") for the expression, castNonNull is a method that  suppresses warnings from the Nullness Checker.
     nestedExceptions.add(doc);
     // Exceptions all the way down!
     populateNestedExceptions(nestedExceptions, cause);
