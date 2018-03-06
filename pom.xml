@@ -79,6 +79,11 @@
       <version>${gson.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.checkerframework</groupId>      
+      <artifactId>checker</artifactId>      
+      <version>2.2.1</version>     
+   </dependency>
   </dependencies>
 
   <build>
