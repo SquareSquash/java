@@ -116,4 +116,7 @@ Git-blame magic.
 
 ADDED ANNOTATIONS
 -------------------
-The code of the SquashBacktrace.java are now with Nullness Annoatations which ensures that the program will never throw a null pointer exception.
+This branch contains the  code of the SquashBacktrace.java that are now with Nullness Annoatations which ensures that the program will never throw a null pointer exception.
+Files Updated are :
+1.SquashBacktrace.java
+2.pom.xml
