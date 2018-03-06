@@ -30,7 +30,7 @@ public final class SquashBacktrace {
     // Should not be instantiated: this is a utility class.
   }
   //adding the annotation @Nullable as the return type may include a null value
-  public static @Nullable List<SquashException> getBacktraces(Throwable error) {
+   public static @Nullable List<SquashException> getBacktraces(Throwable error) {
     if (error == null) {
       return null;
     }
@@ -44,11 +44,16 @@ public final class SquashBacktrace {
   private static List<StackElement> getStacktraceArray(Throwable error) {
     List<StackElement> stackElems = new ArrayList<StackElement>();
     for (StackTraceElement element : error.getStackTrace()) {
-     StackElement elementList =
-          new StackElement(element.getClassName(), castNonNull(element.getFileName()), element.getLineNumber(),
-              element.getMethodName());
+     @SuppressWarnings("nullness") StackElement elementList =
+          new StackElement(element.getClassName(),element.getFileName(), element.getLineNumber(),
+              element.getMethodName());/*The constructor of the StackElement class requires non-null 
+                                         type arguments,but the method call element.getFileName() might 
+                                         return an null value,it can be resolved by modifying parameter of the 
+                                         constructor by adding the annotattion @Nullable, but for now the annotation @SuppressWarnings("nullness") 
+                                         can be added assuming it doesn't return a null value and suppressing it 
+                                         if it does,without crashing the program. */
       stackElems.add(elementList);
-    }//used the method castNonNull because can't use the annotation @SuppressWarnings("nullness") for the expression, castNonNull is a method that  suppresses warnings from the Nullness Checker.
+    }
     return stackElems;
   }
   //adding the annotation @Nullable as the return type may include a null value
@@ -65,7 +70,12 @@ public final class SquashBacktrace {
           if (!field.isAccessible()) {
             field.setAccessible(true);
           }
-          Object val = castNonNull(field.get(error));//used the method castNonNull because can't use the annotation @SuppressWarnings("nullness") for the expression, castNonNull is a method that  suppresses warnings from the Nullness Checker.
+          Object val = castNonNull(field.get(error));/*Ivars is a HashMap object, we can't allow a nullable 
+                                                       value at the place of a value for a specific key in the 
+                                                       put() method of the HashMap.The castNonNull() method of  
+                                                       NullnessUtil class can  be used as this method takes a 
+                                                       possibly null reference unsafely casts it to have the @NonNull 
+                                                       type qualifier.As it's an expression statement @SuppressWarnings("nullness") can't be used.*/
           ivars.put(field.getName(), val);
         }
       } catch (IllegalAccessException e) {
@@ -86,9 +96,15 @@ public final class SquashBacktrace {
       return;
     }
     final Throwable cause = error.getCause();
-    NestedException doc =
-        new NestedException(cause.getClass().getName(), castNonNull(cause.getMessage()), castNonNull(getBacktraces(cause)),
-            castNonNull(getIvars(cause)));//used the method castNonNull because can't use the annotation @SuppressWarnings("nullness") for the expression, castNonNull is a method that  suppresses warnings from the Nullness Checker.
+    @SuppressWarnings("nullness") NestedException doc =
+        new NestedException(cause.getClass().getName(), cause.getMessage(), getBacktraces(cause),
+            getIvars(cause));/*The contructor of the NestedException class can't take a null value,but the three method calls
+                               1. cause.getMessage() , 2. getBacktrace(cause), 3.getIvars(cause) may return null values,
+                               resolved it using @SuppressWarnings("nullness") reasons:         
+                               1. cause.getMessage() : the constructor itself can be modified with the annotation @Nullable
+                               2.getBacktrace(cause) : have a return type annotated with @Nullable(see line no. 33)
+                               3.getIvars(cause) : have a return type annotated with @Nullable(see line no. 61), 
+                               the method castNonNull() of the NullnessUtil class can't be used as there are chances of getting a null value.*/
     nestedExceptions.add(doc);
     // Exceptions all the way down!
     populateNestedExceptions(nestedExceptions, cause);
