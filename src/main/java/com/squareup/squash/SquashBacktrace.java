@@ -16,6 +16,7 @@ package com.squareup.squash;
 
 import org.checkerframework.checker.nullness.qual.*;
 import static org.checkerframework.checker.nullness.NullnessUtil.castNonNull;
+import org.checkerframework.framework.qual.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@AnnotatedFor({"nullness"})
 /** Creates the Squash stacktrace format for serialization by gson. */
 public final class SquashBacktrace {
 
