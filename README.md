@@ -113,3 +113,10 @@ Even if you are not using code obfuscation, you can still use this gem to map
 Java class names to their original file paths, as Java stack traces do not
 include the full path to source files, which Squash needs to perform its
 Git-blame magic.
+
+ADDED ANNOTATIONS
+-------------------
+This branch contains the  code of the SquashBacktrace.java that are now with Nullness Annoatations which ensures that the program will never throw a null pointer exception.
+Files Updated are :
+1.SquashBacktrace.java
+2.pom.xml
