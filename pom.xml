@@ -112,5 +112,16 @@
         </executions>
       </plugin>
     </plugins>
+	<distributionManagement>
+		<repository>
+			<id>squash</id>
+			<!-- 172.16.5.60.nip.io should change your local domain -->
+			<url>http://localhost:8081/nexus/content/repositories/Squash/</url>
+		</repository>
+		<!--<site>-->
+			<!--<id>website</id>-->
+			<!--<url>dav:http://content-repository/sites/${project.groupId}/${project.artifactId}/${project.version}</url>-->
+		<!--</site>-->
+	</distributionManagement>
   </build>
 </project>
