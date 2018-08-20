@@ -1,6 +1,8 @@
 Squash Client Library: Java
 ===========================
 
+[![DepShield Badge](https://depshield.sonatype.org/badges/Mohan18/java/depshield.svg)](https://depshield.github.io)
+
 This client library reports exceptions to Squash, the Squarish exception
 reporting and management system.
 
