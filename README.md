@@ -1,3 +1,7 @@
+### Example
+
+[![DepShield Badge](https://depshield.sonatype.org/badges/SquareSquash/java/depshield.svg)](https://depshield.github.io)
+
 Squash Client Library: Java
 ===========================
 
