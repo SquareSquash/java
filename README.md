@@ -1,3 +1,4 @@
+                                                                                         JAVA
 Squash Client Library: Java
 ===========================
 
