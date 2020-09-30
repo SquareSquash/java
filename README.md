@@ -7,8 +7,8 @@ reporting and management system.
 Documentation
 -------------
 
-For an overview of the various components of Squash, see the website
-documentation at https://github.com/SquareSquash/web.
+For any query of the various components of Squash, see the website
+documentation at https://github.com/SquareSquash/web. 
 
 Compatibility
 -------------
