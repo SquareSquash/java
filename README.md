@@ -1,4 +1,4 @@
-Squash Client Library: Java
+Squash Client Library: Java an amazing project
 ===========================
 
 This client library reports exceptions to Squash, the Squarish exception
