@@ -41,9 +41,9 @@ public class AndroidSquashEntry extends SquashEntry implements LogEntry {
     private transient Gson gson;
 
     // Device stuff.
-    private final String device_id;
-    private final String device_type;
-    private final String operating_system;
+    private final String device_ID;
+    private final String device_Type;
+    private final String operating_System;
     private final boolean rooted;
     private final String network_operator;
     private final String network_type;
