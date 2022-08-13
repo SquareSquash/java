@@ -105,11 +105,4 @@ Thread.setDefaultUncaughtExceptionHandler(
 De-Obfuscation and File Paths
 -----------------------------
 
-The [Squash Java Deobfuscator](https://github.com/SquareSquash/java_deobfuscator)
-Ruby gem can be included into your build-and-release process to upload yGuard
-or ProGuard obfuscation maps to Squash.
-
-Even if you are not using code obfuscation, you can still use this gem to map
-Java class names to their original file paths, as Java stack traces do not
-include the full path to source files, which Squash needs to perform its
-Git-blame magic.
+asdasdasd
