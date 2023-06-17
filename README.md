@@ -31,6 +31,10 @@ properties as well.
 ```` java
 import com.squareup.squash.SquashEntry;
 
+/**
+ * Represents an Android Squash entry.
+ * Extends SquashEntry and implements LogEntry.
+ */
 public class AndroidSquashEntry extends SquashEntry implements LogEntry {
     // The API key used for all Android Squash entries.
     private static final String API_KEY = "YOUR_API_KEY";
@@ -41,25 +45,25 @@ public class AndroidSquashEntry extends SquashEntry implements LogEntry {
     private transient Gson gson;
 
     // Device stuff.
-    private final String device_id;
-    private final String device_type;
-    private final String operating_system;
-    private final boolean rooted;
-    private final String network_operator;
-    private final String network_type;
-    private final String connectivity;
-    private final String orientation;
+    private final String device_id;              // The ID of the device.
+    private final String device_type;            // The type of the device.
+    private final String operating_system;       // The operating system of the device.
+    private final boolean rooted;                // Indicates if the device is rooted.
+    private final String network_operator;       // The network operator of the device.
+    private final String network_type;           // The network type of the device.
+    private final String connectivity;           // The connectivity status of the device.
+    private final String orientation;            // The orientation of the device.
 
     // Location stuff.
-    private final String lat;
-    private final String lon;
-    private final String altitude;
-    private final String location_precision;
-    private final String heading;
-    private final String speed;
+    private final String lat;                    // The latitude of the location.
+    private final String lon;                    // The longitude of the location.
+    private final String altitude;               // The altitude of the location.
+    private final String location_precision;     // The precision of the location.
+    private final String heading;                // The heading of the location.
+    private final String speed;                  // The speed of the location.
 
     // Which app am I?
-    private final String app_id;
+    private final String app_id;                 // The ID of the app.
 }
 ````
 
