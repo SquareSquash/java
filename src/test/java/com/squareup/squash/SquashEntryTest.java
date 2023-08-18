@@ -37,6 +37,7 @@ public class SquashEntryTest {
     assertThat(deserialized.log_message).isEqualTo(message);
     assertThat(deserialized.parent_exceptions).isEmpty();
     assertThat(deserialized.class_name).isNull();
+    System.out.println("its Ok");
   }
 
   private SquashEntry serializeAndDeserialize(SquashEntry logEntry) throws IOException {
@@ -105,6 +106,7 @@ public class SquashEntryTest {
     final SquashEntry logEntry = factory.create(null, exception);
     SquashEntry deserialized = serializeAndDeserialize(logEntry);
     assertThat(deserialized.message).isEqualTo("No message");
+
   }
 
   private void assertBacktracesMatch(StackTraceElement[] myLittleStackTrace,
