@@ -113,3 +113,27 @@ Even if you are not using code obfuscation, you can still use this gem to map
 Java class names to their original file paths, as Java stack traces do not
 include the full path to source files, which Squash needs to perform its
 Git-blame magic.
+
+How to use the checkstyle linter ?
+---------------------------------
+## 🧪 Code Style & Linting (Checkstyle)
+
+This project uses [Checkstyle](https://checkstyle.org/) to ensure consistent code formatting and style.
+
+### ✅ Run Checkstyle Locally
+
+1. *Download* the Checkstyle JAR file:
+   [checkstyle-10.12.3-all.jar](https://github.com/checkstyle/checkstyle/releases)
+
+2. *Run the Checkstyle command* from the root directory of this project:
+
+   bash
+   java -jar checkstyle-10.12.3-all.jar -c checkstyle.xml PATH_TO_JAVA_FILES
+
+
+> Replace PATH_TO_JAVA_FILES with the folder where .java files are located (e.g., src/, algorithms/, or app/).
+
+### 🧰 Tip
+You can create a script (like checkstyle.bat or lint.sh) to automate this process.
+
+Keeping code clean and well-styled helps everyone contribute more efficiently. 🙂
