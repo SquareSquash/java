@@ -5,6 +5,8 @@ This client library reports exceptions to Squash, the Squarish exception
 reporting and management system.
 
 checking the git remote and fork command.
+also checking the branch changing concepts.
+
 
 Documentation
 -------------
